@@ -7,6 +7,9 @@ import store from './store'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 
+// 引入全局样式，要在vant下面引入
+import '../src/assets/css/global.less'
+
 // 导入设置基准值
 import 'amfe-flexible/index.min.js'
 
