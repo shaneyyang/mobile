@@ -1,13 +1,9 @@
 <template>
-  <div>
-    <h2>App根组件</h2>
-    <router-view></router-view>
-  </div>
+  <div>登录</div>
 </template>
 
 <script>
 export default {
-  name: 'app'
 }
 </script>
 
