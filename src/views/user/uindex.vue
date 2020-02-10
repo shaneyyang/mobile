@@ -1,5 +1,7 @@
 <template>
-  <div>主页</div>
+  <div class="container">
+    user
+  </div>
 </template>
 
 <script>
