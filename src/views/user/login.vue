@@ -1,6 +1,7 @@
 <template>
   <div class="user-login">
     <van-nav-bar title="登录"></van-nav-bar>
+    <ValidationObserver ref="loginFormRef">
       <van-cell-group>
         <ValidationProvider name="手机号" rules="required|phone" v-slot="{ errors}">
         <van-field
@@ -27,9 +28,11 @@
         </van-field>
         </ValidationProvider>
       </van-cell-group>
+      </ValidationObserver>
     <div class="login-btn">
       <van-button type="info" block round size="small" @click="login()">登录</van-button>
     </div>
+
   </div>
 </template>
 
@@ -38,7 +41,8 @@
 import { apiUserLogin } from '../../api/user'
 
 // 导入校验规则
-import { ValidationProvider } from 'vee-validate'
+// 导入自定义校验规则
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 export default {
   name: 'user-login',
   data () {
@@ -46,15 +50,25 @@ export default {
       loginForm: {
         mobile: '13911111111',
         code: '246810'
+        // mobile: '',
+        // code: ''
       }
     }
   },
   components: {
     // 注册校验规则组件
-    ValidationProvider
+    ValidationProvider,
+    // 注册自定义校验规则组件
+    ValidationObserver
   },
   methods: {
     async login () {
+      // 对表单全部项目做校验，没有问题再向下执行
+      const valid = await this.$refs.loginFormRef.validate()
+      if (!valid) {
+        // 校验失败，停止后续代码
+        return false
+      }
       try {
         // 获取数据
         var result = await apiUserLogin(this.loginForm)
