@@ -30,7 +30,15 @@
       </van-cell-group>
       </ValidationObserver>
     <div class="login-btn">
-      <van-button type="info" block round size="small" @click="login()">登录</van-button>
+      <van-button type="info"
+       block
+       round
+       size="small"
+       :loading="isloading"
+       loading-text="加载中..."
+       @click="login()"
+       >
+       登录</van-button>
     </div>
 
   </div>
@@ -52,7 +60,8 @@ export default {
         code: '246810'
         // mobile: '',
         // code: ''
-      }
+      },
+      isloading: false
     }
   },
   components: {
@@ -69,12 +78,19 @@ export default {
         // 校验失败，停止后续代码
         return false
       }
+      // loading显示
+      this.isloading = true
+
       try {
         // 获取数据
         var result = await apiUserLogin(this.loginForm)
         console.log(result)
         // 给vuex传值
         this.$store.commit('updateUser', result)
+
+        // loading关闭
+        this.isloading = false
+
         // 登录成功
         this.$toast.success('登陆成功')
         // 跳转页面
