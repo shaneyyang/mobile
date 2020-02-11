@@ -42,7 +42,7 @@ instance.interceptors.request.use(function (config) {
 })
 
 // 配置【响应拦截器】
-axios.interceptors.response.use(function (response) {
+instance.interceptors.response.use(function (response) {
   // 正常响应处理
   // 有时返回data、有时返回data.data
   try {

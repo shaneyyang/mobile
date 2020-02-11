@@ -22,19 +22,37 @@
         </van-field>
       </van-cell-group>
     <div class="login-btn">
-      <van-button type="info" block round size="small">登录</van-button>
+      <van-button type="info" block round size="small" @click="login()">登录</van-button>
     </div>
   </div>
 </template>
 
 <script>
+import { apiUserLogin } from '../../api/user'
 export default {
   name: 'user-login',
   data () {
     return {
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
+      }
+    }
+  },
+  methods: {
+    async login () {
+      try {
+        // 获取数据
+        var result = await apiUserLogin(this.loginForm)
+        console.log(result)
+        // 给vuex传值
+        this.$store.commit('updateUser', result)
+        // 登录成功
+        this.$toast.success('登陆成功')
+        // 跳转页面
+        this.$router.push('/')
+      } catch (err) {
+        this.$toast.fail('手机号或验证码错误' + err)
       }
     }
   }
