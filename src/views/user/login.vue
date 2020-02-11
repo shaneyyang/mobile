@@ -2,6 +2,7 @@
   <div class="user-login">
     <van-nav-bar title="登录"></van-nav-bar>
       <van-cell-group>
+        <ValidationProvider name="手机号" rules="required|phone" v-slot="{ errors}">
         <van-field
           label="手机号"
           v-model="loginForm.mobile"
@@ -9,7 +10,10 @@
           placeholder="请输入用户名"
           required
           clearable
+          :error-message="errors[0]"
         />
+        </ValidationProvider>
+        <ValidationProvider name="验证码" rules="required" v-slot="{ errors }">
         <van-field
           v-model="loginForm.code"
           type="password"
@@ -17,9 +21,11 @@
           label="密码"
           required
           clearable
+          :error-message="errors[0]"
         >
           <van-button slot="button" size="small" type="primary">发送验证码</van-button>
         </van-field>
+        </ValidationProvider>
       </van-cell-group>
     <div class="login-btn">
       <van-button type="info" block round size="small" @click="login()">登录</van-button>
@@ -28,7 +34,11 @@
 </template>
 
 <script>
+// 导入api方法
 import { apiUserLogin } from '../../api/user'
+
+// 导入校验规则
+import { ValidationProvider } from 'vee-validate'
 export default {
   name: 'user-login',
   data () {
@@ -38,6 +48,10 @@ export default {
         code: '246810'
       }
     }
+  },
+  components: {
+    // 注册校验规则组件
+    ValidationProvider
   },
   methods: {
     async login () {
@@ -61,6 +75,7 @@ export default {
 
 <style scoped lang='less'>
 .login-btn {
+  // 是实际padding的2倍，页面显示应该是20px
   padding: 40px 0;
 }
 </style>

@@ -13,6 +13,9 @@ import '../src/assets/css/global.less'
 // 导入设置基准值
 import 'amfe-flexible/index.min.js'
 
+// 导入校验规则独立文件
+import './utils/validate'
+
 Vue.use(Vant)
 
 Vue.config.productionTip = false
