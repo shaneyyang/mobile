@@ -3,8 +3,7 @@
     <van-tabs v-model="activeChannelIndex">
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
         <!-- 瀑布流加载列表 -->
-
-        <com-article></com-article>
+        <com-article :channelId="item.id"></com-article>
       </van-tab>
     </van-tabs>
   </div>
