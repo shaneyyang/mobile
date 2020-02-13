@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-wrapper">
     <!-- 下拉刷新 -->
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text="刷新成功">
       <!-- 瀑布 -->
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell v-for="item in list" :key="item" :title="item" />
