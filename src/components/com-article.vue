@@ -12,6 +12,7 @@
 
 <script>
 import { Toast } from 'vant'
+
 export default {
   name: 'com-article',
   data () {

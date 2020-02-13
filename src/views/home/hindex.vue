@@ -1,15 +1,9 @@
 <template>
   <div class="container">
     <van-tabs v-model="activeChannelIndex">
-      <van-tab title="推荐">
+      <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
         <!-- 瀑布流加载列表 -->
 
-        <com-article></com-article>
-      </van-tab>
-      <van-tab title="数据库">
-        <com-article></com-article>
-      </van-tab>
-      <van-tab title="后端">
         <com-article></com-article>
       </van-tab>
     </van-tabs>
@@ -17,19 +11,35 @@
 </template>
 
 <script>
+// 引入瀑布流加载文章组件
 import ComArticle from '../../components/com-article'
+// 引入api
+import { apiChannelList } from '../../api/channel'
+
 export default {
   name: 'home-index',
   data () {
     return {
       // 激活频道下标
-      activeChannelIndex: 0
+      activeChannelIndex: 0,
+      // 频道列表
+      channelList: []
     }
   },
   components: {
     ComArticle
   },
-  methods: {}
+  created () {
+    this.getChannelList()
+  },
+  methods: {
+    async getChannelList () {
+      const result = await apiChannelList()
+      console.log(result)
+      //
+      this.channelList = result.channels
+    }
+  }
 }
 </script>
 
