@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- v-model设置默认显示第几个频道 -->
     <van-tabs v-model="activeChannelIndex">
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
         <!-- 瀑布流加载列表 -->
@@ -25,17 +26,19 @@ export default {
       channelList: []
     }
   },
+  // 引入子组件
   components: {
     ComArticle
   },
   created () {
+    // 调取获取频道列表
     this.getChannelList()
   },
   methods: {
+    // 获取频道列表
     async getChannelList () {
       const result = await apiChannelList()
-      console.log(result)
-      //
+      // console.log(result)
       this.channelList = result.channels
     }
   }

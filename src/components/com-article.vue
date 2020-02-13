@@ -4,6 +4,7 @@
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text="刷新成功">
       <!-- 瀑布 -->
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <!-- art_id是大整型数字，所以需要转换成字符串 -->
         <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title" />
       </van-list>
     </van-pull-refresh>
@@ -11,8 +12,7 @@
 </template>
 
 <script>
-import { Toast } from 'vant'
-
+// 导入api
 import { apiArticleList } from '../api/article'
 export default {
   name: 'com-article',
@@ -39,14 +39,11 @@ export default {
 
     }
   },
-  created () {
-    // 获取文章列表
-    this.getArticleList()
-  },
+
   methods: {
+    // 下拉刷新
     onRefresh () {
       setTimeout(() => {
-        Toast('刷新成功')
         this.isLoading = false
         // 调用瀑布流
         this.onLoad()
@@ -62,7 +59,7 @@ export default {
       this.articleList.push(...articles.results)
       // 关闭加载状态
       this.loading = false
-      //
+      // 判断数据是否全部加载
       if (!articles.pre_timestamp) {
         // 停止上拉加载功能
         this.finished = true
