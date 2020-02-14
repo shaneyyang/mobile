@@ -18,6 +18,18 @@ import './utils/validate'
 
 Vue.use(Vant)
 
+// 创建一个延迟执行的成员,$sleep是自定义的
+Vue.prototype.$sleep = time => {
+  // 返回一个promise对象，应用端可以设置async/await使得异步变为同步
+  // 同步可以使得后续代码都按照先后顺序执行
+  return new Promise((resolve) => {
+    window.setTimeout(() => {
+      resolve()
+      // resolve没有实时数据，应用端也不用接收
+    }, time)
+  })
+}
+
 Vue.config.productionTip = false
 
 new Vue({

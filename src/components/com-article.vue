@@ -5,7 +5,24 @@
       <!-- 瀑布 -->
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <!-- art_id是大整型数字，所以需要转换成字符串 -->
-        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title" />
+        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title">
+          <!-- 文章描述信息 -->
+          <!-- label：自定义标题下方描述 -->
+          <template slot="label">
+            <!-- 宫格 -->
+            <van-grid :border="false" v-if="item.cover.type>0" :column-num="item.cover.type">
+              <van-grid-item v-for="(item2,k2) in item.cover.images" :key="k2">
+                <van-image width="90" height="90" :src="item2"/>
+              </van-grid-item>
+
+            </van-grid>
+            <p>
+              <span>作者：{{item.aut_name}}</span>&nbsp;
+              <span>评论：{{item.comm_count}}</span>&nbsp;
+              <span>时间：{{item.pubdate}}</span>&nbsp;
+            </p>
+          </template>
+        </van-cell>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -36,7 +53,6 @@ export default {
       articleList: [],
       // 时间戳
       ts: Date.now()
-
     }
   },
 
@@ -52,6 +68,14 @@ export default {
 
     // 瀑布流加载方法
     async onLoad () {
+      // 应用延迟器，使得加载速度减慢
+      // 该延迟器要执行多少秒的延迟
+      // 因为返回的是一个promise对象，所以需要加await
+      // 当前的代码没有执行完毕，后面的代码都不要执行，进行等待
+      // 异步变为同步执行
+      // 一个async里面可以用多个await
+      await this.$sleep(800)
+
       // 1、获取文章数据
       const articles = await this.getArticleList()
 
@@ -69,7 +93,10 @@ export default {
     },
     // 获取文章列表
     async getArticleList () {
-      const result = await apiArticleList({ channel_id: this.channelId, timestamp: this.ts })
+      const result = await apiArticleList({
+        channel_id: this.channelId,
+        timestamp: this.ts
+      })
       // this.articleList = result.results
 
       // 返回result，在瀑布里面实现追加数据
