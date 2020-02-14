@@ -12,7 +12,7 @@
 
 <script>
 // 引入瀑布流加载文章组件
-import ComArticle from '../../components/com-article'
+import ComArticle from './components/com-article'
 // 引入api
 import { apiChannelList } from '../../api/channel'
 

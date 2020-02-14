@@ -35,10 +35,10 @@
 
 <script>
 // 导入api
-import { apiArticleList } from '../api/article'
+import { apiArticleList } from '../../../api/article'
 
 // 导入更多操作组件
-import MoreAction from '../components/com-moreaction'
+import MoreAction from './com-moreaction'
 
 export default {
   name: 'com-article',
