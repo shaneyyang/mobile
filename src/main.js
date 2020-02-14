@@ -2,9 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
 // 一次性导入vant
-import Vant from 'vant'
+import Vant, { Lazyload } from 'vant'
 import 'vant/lib/index.css'
 
 // 引入全局样式，要在vant下面引入
@@ -16,8 +15,18 @@ import 'amfe-flexible/index.min.js'
 // 导入校验规则独立文件
 import './utils/validate'
 
+// 导入过滤器
+import * as filters from './utils/filters' // 过滤器
+
+// 注册全局过滤器
+Object.keys(filters).forEach(item => {
+  Vue.filter(item, filters[item])
+})
+
 Vue.use(Vant)
 
+// 使用懒加载
+Vue.use(Lazyload)
 // 创建一个延迟执行的成员,$sleep是自定义的
 Vue.prototype.$sleep = time => {
   // 返回一个promise对象，应用端可以设置async/await使得异步变为同步
