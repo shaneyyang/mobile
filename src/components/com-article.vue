@@ -16,21 +16,29 @@
               </van-grid-item>
 
             </van-grid>
+
             <p>
               <span>作者：{{item.aut_name}}</span>&nbsp;
               <span>评论：{{item.comm_count}}</span>&nbsp;
               <span>时间：{{item.pubdate |formatTime}}</span>&nbsp;
+              <van-icon name="close" style="float:right;" @click="displayDialog()" />
             </p>
           </template>
         </van-cell>
       </van-list>
     </van-pull-refresh>
+    <!-- 更多操作 -->
+    <more-action v-model="showDialog"></more-action>
   </div>
 </template>
 
 <script>
 // 导入api
 import { apiArticleList } from '../api/article'
+
+// 导入子组件
+import MoreAction from '../components/com-moreaction'
+
 export default {
   name: 'com-article',
   props: {
@@ -40,9 +48,13 @@ export default {
       required: true
     }
   },
-
+  components: {
+    MoreAction
+  },
   data () {
     return {
+      //
+      showDialog: false,
       // 瀑布流成员
       list: [], // 接收加载好的数据
       loading: false, // 加载中动画
@@ -57,6 +69,10 @@ export default {
   },
 
   methods: {
+    //
+    displayDialog () {
+      this.showDialog = true
+    },
     // 下拉刷新
     onRefresh () {
       setTimeout(() => {
