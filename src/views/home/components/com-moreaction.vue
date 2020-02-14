@@ -2,7 +2,7 @@
   <div>
     <!-- 通过:value接收父组件的值，通过input事件把值传递给父组件，此处van标签已经做过处理 -->
     <!-- 如果是普通标签，@input="$emit('input',$event.target.value)" -->
-    <!--  -->
+    <!--  不展示确认按钮，在点击遮罩层后关闭弹窗-->
     <van-dialog
       :value="value"
       @input="$emit('input',$event)"
@@ -11,6 +11,7 @@
     >
       <van-cell-group v-if="isOneLevel">
         <van-cell icon="location-o" title="不感兴趣" />
+        <!-- is-link：是否展示右侧箭头并开启点击反馈 -->
         <van-cell icon="location-o" title="举报垃圾内容" is-link @click="isOneLevel=false" />
         <van-cell icon="location-o" title="屏蔽作者" />
       </van-cell-group>
@@ -42,7 +43,7 @@ export default {
   },
   data () {
     return {
-      show: false,
+      // 判断cell-group结构成员
       isOneLevel: true
     }
   }

@@ -26,7 +26,7 @@ export default {
       channelList: []
     }
   },
-  // 引入子组件
+  // 引入瀑布流加载文章组件
   components: {
     ComArticle
   },
