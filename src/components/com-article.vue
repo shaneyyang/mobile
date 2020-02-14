@@ -27,7 +27,8 @@
         </van-cell>
       </van-list>
     </van-pull-refresh>
-    <!-- 更多操作 -->
+    <!-- 更多操作弹出框 -->
+    <!-- 父组件设置v-model，子组件props属性接收，并通过$emit传递回来 -->
     <more-action v-model="showDialog"></more-action>
   </div>
 </template>
@@ -36,7 +37,7 @@
 // 导入api
 import { apiArticleList } from '../api/article'
 
-// 导入子组件
+// 导入更多操作组件
 import MoreAction from '../components/com-moreaction'
 
 export default {
@@ -48,6 +49,7 @@ export default {
       required: true
     }
   },
+  // 注册更多操作组件
   components: {
     MoreAction
   },
