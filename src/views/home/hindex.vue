@@ -3,10 +3,19 @@
     <!-- v-model设置默认显示第几个频道 -->
     <van-tabs v-model="activeChannelIndex">
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
+
         <!-- 瀑布流加载列表 -->
         <com-article :channelId="item.id"></com-article>
       </van-tab>
+
+       <!-- 图标 -->
+        <div slot="nav-right" class="channel-more">
+          <van-icon name="wap-nav" @click="popShow()"></van-icon>
+        </div>
     </van-tabs>
+
+    <!-- 弹出层组件 -->
+    <com-channel v-model="showPop"></com-channel>
   </div>
 </template>
 
@@ -16,6 +25,9 @@ import ComArticle from './components/com-article'
 // 引入api
 import { apiChannelList } from '../../api/channel'
 
+// 引入pop弹框组件
+import ComChannel from './components/com-channel'
+
 export default {
   name: 'home-index',
   data () {
@@ -23,18 +35,26 @@ export default {
       // 激活频道下标
       activeChannelIndex: 0,
       // 频道列表
-      channelList: []
+      channelList: [],
+      // 弹出层控制
+      showPop: false
     }
   },
   // 引入瀑布流加载文章组件
   components: {
-    ComArticle
+    ComArticle,
+    // 引入pop弹出层组件
+    ComChannel
   },
   created () {
     // 调取获取频道列表
     this.getChannelList()
   },
   methods: {
+    // 弹出层pop方法
+    popShow () {
+      this.showPop = true
+    },
     // 获取频道列表
     async getChannelList () {
       const result = await apiChannelList()
@@ -66,5 +86,20 @@ export default {
   /deep/ .van-tabs__line {
     background-color: #1989fa;
   }
+  // 给右侧的三道杠图标留空间
+  /deep/ .van-tabs__wrap{
+    width: 90%;
+  }
 }
+.channel-more{
+  position: fixed;
+  right: 0;
+  background-color: #fff;
+  line-height: 88px;
+  height: 88px;
+  width: 90px;
+  text-align: center;
+  font-size: 40px;
+}
+
 </style>
