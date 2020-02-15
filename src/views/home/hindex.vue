@@ -15,7 +15,7 @@
     </van-tabs>
 
     <!-- 弹出层组件 -->
-    <com-channel v-model="showPop"></com-channel>
+    <com-channel v-model="showPop" :channelList="channelList" :activeChannelIndex="activeChannelIndex"></com-channel>
   </div>
 </template>
 

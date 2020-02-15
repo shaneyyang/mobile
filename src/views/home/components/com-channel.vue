@@ -22,7 +22,9 @@
    </div>
     <!-- 宫格 -->
     <van-grid :column-num="4" :gutter="10">
-      <van-grid-item v-for="value in 6" :key="value" text="文字" />
+      <van-grid-item v-for="(item,k) in channelList" :key="item.id" >
+        <span :style="{color:activeChannelIndex === k?'red':''}">{{item.name}}</span>
+      </van-grid-item>
     </van-grid>
 
     <div class="channel">
@@ -44,9 +46,25 @@
 export default {
   name: 'com-channel',
   props: {
+    // 接收home组件传递的value值
     value: {
       type: Boolean,
       default: false
+    },
+    // 接收home组件传递的频道列表
+    // 数组的默认值不能直接为[]，需要函数
+    // 可以用箭头函数来简化代码
+    // default:function{
+    //   return []
+    // }
+    channelList: {
+      type: Array,
+      default: () => []
+    },
+    // 接收home组件传来的高亮频道
+    activeChannelIndex: {
+      type: Number,
+      default: 0
     }
   },
   data () {
