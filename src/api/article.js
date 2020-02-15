@@ -24,3 +24,18 @@ export function apiArticleDislike (articleID) {
     }
   })
 }
+
+// 举报
+// 对象解构赋值可以传递默认值
+
+export function apiArticleReport ({ articleID, type, remark = '' }) {
+  return request({
+    url: '/app/v1_0/article/reports',
+    method: 'post',
+    data: {
+      target: articleID,
+      type,
+      remark // 其他问题 的附加说明
+    }
+  })
+}
