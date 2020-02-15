@@ -37,12 +37,17 @@
     </div>
     <!-- 宫格 -->
     <van-grid :column-num="4" :gutter="10">
-      <van-grid-item v-for="value in 6" :key="value" text="文字" />
+      <van-grid-item v-for="item in restChannel" :key="item.id">
+        <span>{{item.name}}</span>
+      </van-grid-item>
     </van-grid>
   </van-popup>
 </template>
 
 <script>
+// 导入api
+import { apiChannelAll } from '../../../api/channel'
+
 export default {
   name: 'com-channel',
   props: {
@@ -68,7 +73,37 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      // 添加全部频道列表
+      channelAll: []
+    }
+  },
+  computed: {
+    // 添加剩余频道
+    restChannel () {
+      // 获取到“我的频道”的全部id，一数组格式返回
+      // 使用map方法对channelList做遍历，返回一个新数组
+      // 元素就是channelList数组各个元素的id值，数组长度与channelList一致
+      const userChannelIds = this.channelList.map(item => { return item.id })
+      // 遍历全部频道，返回不在“我的频道”出现的频道
+      // filter：读channelAll做过滤，把id值不在userChannelIds 数组中的元素通过新数组给返回出来
+      const rest = this.channelAll.filter(item => { return !userChannelIds.includes(item.id) })
+
+      // 返回过滤好的剩余的频道
+      return rest
+    }
+  },
+  created () {
+    // 调用全部频道列表
+    this.getChannelAll()
+  },
+  methods: {
+    // 获取全部列表
+    async getChannelAll () {
+      const result = await apiChannelAll()
+      // console.log(result)
+      this.channelAll = result.channels
+    }
   }
 }
 </script>

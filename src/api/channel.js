@@ -8,3 +8,12 @@ export function apiChannelList () {
     method: 'get' // 可以不设置，默认是get请求
   })
 }
+
+// 获得全部频道列表
+export function apiChannelAll () {
+  return request(
+    {
+      url: '/app/v1_0/channels',
+      method: 'get'
+    })
+}
