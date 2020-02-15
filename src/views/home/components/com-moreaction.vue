@@ -10,7 +10,7 @@
       close-on-click-overlay
     >
       <van-cell-group v-if="isOneLevel">
-        <van-cell icon="location-o" title="不感兴趣" />
+        <van-cell icon="location-o" title="不感兴趣" @click="articleDislike"/>
         <!-- is-link：是否展示右侧箭头并开启点击反馈 -->
         <van-cell icon="location-o" title="举报垃圾内容" is-link @click="isOneLevel=false" />
         <van-cell icon="location-o" title="屏蔽作者" />
@@ -32,6 +32,9 @@
 </template>
 
 <script>
+// 导入不感兴趣api
+import { apiArticleDislike } from '../../../api/article'
+
 export default {
   name: 'com-moreaction',
   //   接收父组件传来的值
@@ -39,12 +42,29 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    // 接收目标文章id
+    articleID: {
+      type: String,
+      // 要求必须传递
+      required: true
     }
   },
   data () {
     return {
       // 判断cell-group结构成员
       isOneLevel: true
+    }
+  },
+  methods: {
+    // 文章不感兴趣处理
+    async articleDislike () {
+      const result = await apiArticleDislike(this.articleID)
+      // console.log(result)
+      // 弹出框消失
+      this.$emit('input', false)
+      // 给父组件传值
+      this.$emit('dislikeSuccess')
     }
   }
 }

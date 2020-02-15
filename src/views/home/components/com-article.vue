@@ -27,7 +27,7 @@
               <span>作者：{{item.aut_name}}</span>&nbsp;
               <span>评论：{{item.comm_count}}</span>&nbsp;
               <span>时间：{{item.pubdate |formatTime}}</span>&nbsp;
-              <van-icon name="close" style="float:right;" @click="displayDialog()" />
+              <van-icon name="close" style="float:right;" @click="displayDialog(item.art_id.toString())" />
             </p>
           </template>
         </van-cell>
@@ -36,7 +36,7 @@
     <!-- 更多操作弹出框 -->
     <!-- 对话框的结构与文章内容结构没有关系，所以不要放置在上面的代码结构中 -->
     <!-- 父组件设置v-model，子组件props属性接收，并通过$emit传递回来 -->
-    <more-action v-model="showDialog"></more-action>
+    <more-action v-model="showDialog" :articleID="nowArticle" @dislikeSuccess="handleDislikeSuccess"></more-action>
   </div>
 </template>
 
@@ -64,6 +64,8 @@ export default {
     return {
       // 添加子组件标签成员
       showDialog: false,
+      // 添加不感兴趣文章id成员
+      nowArticle: '',
       // 瀑布流成员
       list: [], // 接收加载好的数据
       loading: false, // 加载中动画
@@ -78,10 +80,22 @@ export default {
   },
 
   methods: {
+    // 文章不感兴趣
+    handleDislikeSuccess () {
+      // 删除指定的文章（删除结构）
+      // 目标文章id：nowArticle
+      const index = this.articleList.findIndex(
+        item => item.art_id.toString() === this.nowArticle
+      )
+      // 根据下标进行删除
+      this.articleList.splice(index, 1)
+    },
     // 添加显示对话框弹框方法
-    displayDialog () {
+    displayDialog (artID) {
       // 显示对话框，传递给子组件
       this.showDialog = true
+      // 传递参数
+      this.nowArticle = artID
     },
     // 下拉刷新
     onRefresh () {
