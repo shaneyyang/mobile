@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-wrapper">
     <!-- 下拉刷新 -->
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text="刷新成功">
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh" :success-text="downSuccessText">
       <!-- 瀑布 -->
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <!-- art_id是大整型数字，所以需要转换成字符串 -->
@@ -75,7 +75,9 @@ export default {
       // 文章列表
       articleList: [],
       // 时间戳
-      ts: Date.now()
+      ts: Date.now(),
+      // 提示文字
+      downSuccessText: ''
     }
   },
 
@@ -98,13 +100,37 @@ export default {
       this.nowArticle = artID
     },
     // 下拉刷新
-    onRefresh () {
-      setTimeout(() => {
-        // 下拉刷新的动画效果被禁止
-        this.isLoading = false
-        // 调用瀑布流
-        this.onLoad()
-      }, 1000)
+    // 下拉刷新新增文章
+
+    async onRefresh () {
+      // 延迟加载
+      await this.$sleep(800)
+
+      // 调用获取文章的方法
+      const articles = await this.getArticleList()
+      // console.log(articles)
+      // 判断是否有获得最新文章
+      if (articles.results.length > 0) {
+        // 同上拉加载，获得的数据不能直接push到articleList中
+        this.articleList.unshift(...articles.results)
+
+        // 更新时间戳
+        this.ts = articles.pre_timestamp
+        // 提示文字
+        this.downSuccessText = '文章更新成功'
+      } else {
+        // 提示文字为“已经是最新”
+        this.downSuccessText = '已经是最新的'
+      }
+
+      // 加载动画停止
+      this.isLoading = false
+      // setTimeout(() => {
+      //   // 下拉刷新的动画效果被禁止
+      //   this.isLoading = false
+      //   // 调用瀑布流
+      //   this.onLoad()
+      // }, 1000)
     },
 
     // 瀑布流加载方法
