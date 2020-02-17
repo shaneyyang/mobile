@@ -110,6 +110,11 @@ export default {
       this.channelList.splice(index, 1)
       // local删除
       apiChannelDel(channelID)
+      // 判断是否被激活的频道被删除
+      // 是的话，就让activeIndex向前移一位
+      if (this.channelList.length === index) {
+        this.$emit('activeChannelIndex', index - 1)
+      }
     },
     // 添加频道
     restToUser (channel) {
