@@ -22,7 +22,7 @@
    </div>
     <!-- 宫格 -->
     <van-grid :column-num="4" :gutter="10">
-      <van-grid-item v-for="(item,k) in channelList" :key="item.id" >
+      <van-grid-item v-for="(item,k) in channelList" :key="item.id" @click="clkChannel(k,item.id)">
         <span :style="{color:activeChannelIndex === k?'red':''}">{{item.name}}</span>
         <!-- 叉号内容 -->
         <van-icon v-show="k>0 && isEdit=== true" class="close-icon" name="close" @click="userToRest(item.id,k)"></van-icon>
@@ -104,6 +104,18 @@ export default {
     this.getChannelAll()
   },
   methods: {
+    // 激活频道
+    clkChannel (index, id) {
+      if (this.isEdit && index > 0) {
+        // 删除频道
+        this.userToRest(id)
+        return false
+      }
+      // 频道对话框消失
+      this.$emit('input', false)
+      // 父组件频道激活
+      this.$emit('update:activeChannelIndex', index)
+    },
     // 删除频道
     userToRest (channelID, index) {
       // 页面删除
