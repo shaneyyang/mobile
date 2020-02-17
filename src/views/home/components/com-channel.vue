@@ -16,7 +16,7 @@
           <span class="desc">点击进入频道</span>
         </div>
         <div>
-          <van-button type="danger" plain size="mini" round>编辑</van-button>
+          <van-button type="danger" plain size="mini" round @click="isEdit=!isEdit">{{isEdit===true?'完成':'编辑'}}</van-button>
         </div>
       </div>
    </div>
@@ -24,6 +24,8 @@
     <van-grid :column-num="4" :gutter="10">
       <van-grid-item v-for="(item,k) in channelList" :key="item.id" >
         <span :style="{color:activeChannelIndex === k?'red':''}">{{item.name}}</span>
+        <!-- 叉号内容 -->
+        <van-icon v-show="k>0 && isEdit=== true" class="close-icon" name="close"></van-icon>
       </van-grid-item>
     </van-grid>
 
@@ -76,7 +78,9 @@ export default {
   data () {
     return {
       // 添加全部频道列表
-      channelAll: []
+      channelAll: [],
+      // 点击编辑叉号按钮
+      isEdit: false
     }
   },
   computed: {
@@ -134,6 +138,14 @@ export default {
     }
   }
 }
+.close-icon {
+    font-size: 20px;
+    position: absolute;
+    top:-5px;
+    right: -5px;
+    z-index: 999;
+    background-color: #fff;
+  }
 .channel-content {
   .text {
     font-size: 16px;
@@ -142,14 +154,7 @@ export default {
   .active {
     color: red;
   }
-  .close-icon {
-    font-size: 20px;
-    position: absolute;
-    top:-5px;
-    right: -5px;
-    z-index: 999;
-    background-color: #fff;
-  }
+
   .info {
     display: flex;
     align-items: center;
