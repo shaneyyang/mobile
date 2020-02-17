@@ -25,7 +25,7 @@
       <van-grid-item v-for="(item,k) in channelList" :key="item.id" >
         <span :style="{color:activeChannelIndex === k?'red':''}">{{item.name}}</span>
         <!-- 叉号内容 -->
-        <van-icon v-show="k>0 && isEdit=== true" class="close-icon" name="close"></van-icon>
+        <van-icon v-show="k>0 && isEdit=== true" class="close-icon" name="close" @click="userToRest(item.id,k)"></van-icon>
       </van-grid-item>
     </van-grid>
 
@@ -49,7 +49,8 @@
 <script>
 // 导入api
 // 添加频道api
-import { apiChannelAll, apiChannelAdd } from '../../../api/channel'
+// 导入删除频道api
+import { apiChannelAll, apiChannelAdd, apiChannelDel } from '../../../api/channel'
 
 export default {
   name: 'com-channel',
@@ -103,6 +104,13 @@ export default {
     this.getChannelAll()
   },
   methods: {
+    // 删除频道
+    userToRest (channelID, index) {
+      // 页面删除
+      this.channelList.splice(index, 1)
+      // local删除
+      apiChannelDel(channelID)
+    },
     // 添加频道
     restToUser (channel) {
       // 我的频道列表添加成员

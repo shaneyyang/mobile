@@ -23,6 +23,22 @@ export function apiChannelAdd (channel) {
   })
 }
 
+// 删除频道
+export function apiChannelDel (id) {
+  return new Promise(function (resolve) {
+    const key = store.state.user.token ? CHANNEL_KET_VIP : CHANNEL_KEY_TRAVEL // 获取缓存的key
+    const localChannels = localStorage.getItem(key) // 获取缓存
+
+    // 缓存有数据
+    let channels = JSON.parse(localChannels)
+    // 排除删除的id
+    channels = channels.filter(item => item.id !== id)
+    // 重新写入缓存
+    localStorage.setItem(key, JSON.stringify(channels))
+    resolve() // 成功执行
+  })
+}
+
 // 获得频道列表
 // 登录与否都可以获取数据
 // 登录用户独立存储一份local数据
