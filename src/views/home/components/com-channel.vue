@@ -37,8 +37,8 @@
     </div>
     <!-- 宫格 -->
     <van-grid :column-num="4" :gutter="10">
-      <van-grid-item v-for="item in restChannel" :key="item.id">
-        <span>{{item.name}}</span>
+      <van-grid-item v-for="item in restChannel" :key="item.id" @click="restToUser(item)">
+        <span >{{item.name}}</span>
       </van-grid-item>
     </van-grid>
   </van-popup>
@@ -46,7 +46,8 @@
 
 <script>
 // 导入api
-import { apiChannelAll } from '../../../api/channel'
+// 添加频道api
+import { apiChannelAll, apiChannelAdd } from '../../../api/channel'
 
 export default {
   name: 'com-channel',
@@ -98,6 +99,13 @@ export default {
     this.getChannelAll()
   },
   methods: {
+    // 添加频道
+    restToUser (channel) {
+      // 我的频道列表添加成员
+      this.channelList.push(channel)
+      // 永久化
+      apiChannelAdd(channel)
+    },
     // 获取全部列表
     async getChannelAll () {
       const result = await apiChannelAll()
