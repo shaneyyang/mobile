@@ -7,6 +7,7 @@
     :style="{ height: '90%' }"
     closeable
     close-icon-position="top-left"
+    @close="isEdit=false"
   >
   <!-- group是弹出层标签 -->
    <div class="channel">
