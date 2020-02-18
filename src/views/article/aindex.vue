@@ -1,43 +1,70 @@
 <template>
-  <div class="container">
-    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="文章详情"></van-nav-bar>
-
-    <div class="detail">
-      <h3 class="title">美女与野兽</h3>
-      <div class="author">
-        <van-image
-          round
-          width="1rem"
-          height="1rem"
-          fit="fill"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
-        />
-        <div class="text">
-          <p class="name">一阵清风</p>
-          <p class="time">两周内</p>
-        </div>
-        <van-button round size="small" type="info">+ 关注</van-button>
-      </div>
-      <div class="content">
-        <p>文章内容文章内容文章内容</p>
-      </div>
-      <div class="zan">
-        <van-button
-                    round
-                    size="small"
-                    class="active"
-                    plain
-                    icon="like-o"
-                    style="margin-right:8px;">点赞</van-button>
-        <van-button round size="small" plain icon="delete">不喜欢</van-button>
-      </div>
+<div class="detail">
+  <h3 class="title">{{article.title}}</h3>
+  <div class="author">
+    <van-image round width="1rem" height="1rem" fit="fill" :src="article.aut_photo"/>
+    <div class="text">
+      <p class="name">{{article.aut_name}}</p>
+      <p class="time">{{article.pubdate | formatTime}}</p>
     </div>
+    <!-- default:按钮没有颜色 info:按钮是蓝色背景-->
+    <van-button
+                round
+                size="small"
+                :type="article.is_followed?'default':'info'"
+                >{{article.is_followed?'取消关注':'+ 关注'}}</van-button>
   </div>
+  <div class="content">
+    <p>{{article.content}}</p>
+  </div>
+  <div class="zan">
+    <van-button
+                round
+                size="small"
+                :class="{active:article.attitude===1}"
+                plain
+                icon="like-o"
+                style="margin-right:8px;"
+                >点赞</van-button>
+    <van-button
+                round
+                :class="{active:article.attitude===0}"
+                size="small"
+                plain
+                icon="delete"
+                >不喜欢</van-button>
+  </div>
+</div>
 </template>
 
 <script>
+// 文章详情api
+import { apiArticleDetail } from '@/api/article.js'
 export default {
-  name: 'article'
+  name: 'article-index',
+  data () {
+    return {
+      article: {} // 目标文章详情信息
+    }
+  },
+  computed: {
+    // 简化路由参数获取
+    aid: function () {
+      return this.$route.params.aid
+    }
+  },
+  created () {
+    // 自动调用
+    this.getArticleDetail()
+  },
+  methods: {
+    // 获得文章详情
+    async getArticleDetail () {
+      // 调用api获得文章详情
+      const result = await apiArticleDetail(this.aid)
+      this.article = result
+    }
+  }
 }
 </script>
 
