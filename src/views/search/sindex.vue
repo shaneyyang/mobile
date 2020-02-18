@@ -4,7 +4,10 @@
     <!-- 搜索组件 -->
     <van-search v-model.trim="searchText" placeholder="请输入搜索关键词" />
     <van-cell-group>
-      <van-cell v-for="item in suggestionList" :title="item" :key="item" icon="search" />
+      <van-cell v-for="item in suggestionList" :key="item" icon="search">
+        <!-- 关键字高亮 -->
+        <div slot="title" v-html="highlightCell(item,searchText)"></div>
+      </van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -40,7 +43,19 @@ export default {
     }
   },
   methods: {
+    // 添加方法，高亮联想数据的关键字
+    highlightCell (item, keywords) {
+      // 正则表达式有两种
+      // 一种是双//
+      // 第二种是new 实例，此处使用此方法，可在里面解析使用变量keywords
+      // 忽略大小写
+      const reg = new RegExp(`${keywords}`, 'i')
 
+      const rst = item.match(reg) // 获得匹配内容
+
+      // 对关键字高亮处理
+      return item.replace(reg, `<span style="color:red">${rst[0]}</span>`)
+    }
   }
 }
 </script>

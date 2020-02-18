@@ -40,8 +40,8 @@
     </div>
     <!-- 宫格 -->
     <van-grid :column-num="4" :gutter="10">
-      <van-grid-item v-for="item in restChannel" :key="item.id" @click="restToUser(item)">
-        <span >{{item.name}}</span>
+      <van-grid-item v-for="item2 in restChannel" :key="item2.id" @click="restToUser(item2)">
+        <span >{{item2.name}}</span>
       </van-grid-item>
     </van-grid>
   </van-popup>
