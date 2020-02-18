@@ -58,7 +58,7 @@ const routes = [
     component: Search // 搜索中心
   },
   {
-    path: '/search/result',
+    path: '/search/result/:q', // 路由传参
     component: SearchResult // 搜索结果
   }
 

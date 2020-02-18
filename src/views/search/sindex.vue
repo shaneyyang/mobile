@@ -2,11 +2,12 @@
   <div class="container">
     <van-nav-bar title="搜索中心" left-arrow @click-left="$router.back()" />
     <!-- 搜索组件 -->
-    <van-search v-model.trim="searchText" placeholder="请输入搜索关键词" />
+    <van-search v-model.trim="searchText" placeholder="请输入搜索关键词" @search="onSearch(searchText)"/>
     <van-cell-group>
-      <van-cell v-for="item in suggestionList" :key="item" icon="search">
+      <van-cell v-for="(item,k11) in suggestionList" :key="k11" icon="search">
         <!-- 关键字高亮 -->
-        <div slot="title" v-html="highlightCell(item,searchText)"></div>
+        <!-- 传递参数：搜索的啥就是啥 -->
+        <div v-html="highlightCell(item,searchText)" @click="onSearch(item)"></div>
       </van-cell>
     </van-cell-group>
   </div>
@@ -43,17 +44,25 @@ export default {
     }
   },
   methods: {
+    // 跳转页面
+    onSearch (keyword) {
+      // 没有联想内容，停止后续处理
+      if (!keyword) { return false }
+
+      this.$router.push('/search/result/' + keyword)
+    },
     // 添加方法，高亮联想数据的关键字
     highlightCell (item, keywords) {
       // 正则表达式有两种
       // 一种是双//
       // 第二种是new 实例，此处使用此方法，可在里面解析使用变量keywords
-      // 忽略大小写
+      // i是忽略大小写
       const reg = new RegExp(`${keywords}`, 'i')
 
-      const rst = item.match(reg) // 获得匹配内容
+      // 获得匹配内容
+      const rst = item.match(reg)
 
-      // 对关键字高亮处理
+      // 对关键字进行高亮处理
       return item.replace(reg, `<span style="color:red">${rst[0]}</span>`)
     }
   }
