@@ -6,7 +6,7 @@
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <!-- art_id是大整型数字，所以需要转换成字符串 -->
         <!-- 获取的文章的标题内容，已经在cell标签中设置属性 -->
-        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title">
+        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title" @click="$router.push('/article/'+item.art_id.toString())">
           <!-- 文章描述信息 -->
           <!-- label：自定义标题下方描述 -->
           <template slot="label">
@@ -27,7 +27,7 @@
               <span>作者：{{item.aut_name}}</span>&nbsp;
               <span>评论：{{item.comm_count}}</span>&nbsp;
               <span>时间：{{item.pubdate |formatTime}}</span>&nbsp;
-              <van-icon name="close" style="float:right;" @click="displayDialog(item.art_id.toString())" />
+              <van-icon name="close" style="float:right;" @click.stop="displayDialog(item.art_id.toString())" />
             </p>
           </template>
         </van-cell>

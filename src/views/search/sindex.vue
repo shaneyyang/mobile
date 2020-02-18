@@ -70,6 +70,7 @@ export default {
       // 关键字为空就停止联想
       if (!newV) {
         this.suggestionList = []
+        clearTimeout(this.timer)
         return false
       }
       // 防抖操作

@@ -50,7 +50,7 @@ const routes = [
     component: Login // 登录组件
   },
   {
-    path: '/article',
+    path: '/article/:aid', // 路由参数
     component: Article // 文章详情
   },
   {
