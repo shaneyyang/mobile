@@ -2,10 +2,10 @@
   <div class="container">
     <!-- v-model设置默认显示第几个频道 -->
     <van-tabs v-model="activeChannelIndex">
-      <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
+      <van-tab :title="items.name" v-for="(items,ks) in channelList" :key="ks">
 
         <!-- 瀑布流加载列表 -->
-        <com-article :channelId="item.id"></com-article>
+        <com-article :channelId="items.id"></com-article>
       </van-tab>
 
        <!-- 图标 -->

@@ -23,7 +23,7 @@
    </div>
     <!-- 宫格 -->
     <van-grid :column-num="4" :gutter="10">
-      <van-grid-item v-for="(item,k) in channelList" :key="item.id" @click="clkChannel(k,item.id)">
+      <van-grid-item v-for="(item,k) in channelList" :key="k" @click="clkChannel(k,item.id)">
         <span :style="{color:activeChannelIndex === k?'red':''}">{{item.name}}</span>
         <!-- 叉号内容 -->
         <van-icon v-show="k>0 && isEdit=== true" class="close-icon" name="close" @click="userToRest(item.id,k)"></van-icon>
