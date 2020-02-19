@@ -41,7 +41,7 @@
 
     <!-- 弹出层 -->
     <!-- 回复列表展示-弹出层/瀑布 -->
-    <van-popup v-model="showReply" position="bottom" :style="{ height: '80%' }" round>
+    <van-popup v-model="showReply" position="bottom" :style="{ height: '80%' }" round @close="nowComID=''">
       <!-- 瀑布加载效果 -->
       <van-list
         v-model="reply.loading"
