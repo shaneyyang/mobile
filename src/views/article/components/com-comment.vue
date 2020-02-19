@@ -69,6 +69,15 @@
         </van-cell>
       </van-list>
     </van-popup>
+    <!-- 添加评论或回复的小构件 -->
+    <div class="reply-container van-hairline--top">
+      <van-field v-model.trim="contentCorR" :placeholder="this.nowComID?'请回复...':'请评论...'">
+        <!-- van-loading设置加载图标，与提交进行配置使用slot="button"命名插槽，表明要给van-field的指定位置填充内容(右侧)
+        -->
+        <van-loading v-if="submitting" slot="button" type="spinner" size="16px"></van-loading>
+        <span class="submit" v-else slot="button" @click="add">提交</span>
+      </van-field>
+    </div>
   </div>
 </template>
 
@@ -77,11 +86,16 @@
 import { apiCommentList } from '../../../api/comment'
 
 // 获取评论回复api
-import { apiReplyList } from '../../../api/reply.js'
+// 导入添加评论或回复api
+import { apiReplyList, apiAddCorR } from '../../../api/reply.js'
 export default {
   name: 'com-comment',
   data () {
     return {
+      // 评论内容
+      contentCorR: '',
+      // 提交评论
+      submitting: false,
       // 瀑布流相关
       loading: false,
       finished: false,
@@ -108,6 +122,54 @@ export default {
     }
   },
   methods: {
+    // 添加评论或回复
+    // 添加 评论 或 回复
+    async add () {
+      // 没有输入内容
+      if (!this.contentCorR) return false
+
+      // 开启提交中
+      this.submitting = true
+
+      // 暂停0.8秒
+      await this.$sleep(800)
+
+      if (this.showReply) {
+        // A. 回复
+        // target: this.nowComID, 被激活评论id
+        // content: this.contentCorR,回复内容
+        // art_id: this.aid 当前文章id
+        const result = await apiAddCorR({
+          target: this.nowComID,
+          content: this.contentCorR,
+          art_id: this.aid
+        })
+        // result里边可以访问new_obj成员，代表被新添加的回复的对象内容
+        // 在回复列表顶部追加  回复信息(新回复信息置顶显示)，使得可以立即展示(响应式)
+        this.replyList.unshift(result.new_obj)
+        // 找到当前回复的评论项目，对回复的数量进行累加操作
+        // find()可以从大的"数组对象集"中获得某一个小对象
+        //       这个小对象是引用传递出来的，外部对其进行修改
+        //       数组对象集内部可以感知到
+        const comment = this.commentList.find(
+          item => item.com_id.toString() === this.nowComID
+        )
+        comment.reply_count++ // 回复数量累加
+      } else {
+        // B. 评论
+        const result = await apiAddCorR({
+          target: this.aid,
+          content: this.contentCorR
+        })
+        // 在评论顶部追加  评论信息(新评论信息置顶显示)
+        this.commentList.unshift(result.new_obj)
+      }
+
+      // 清除输入框
+      this.contentCorR = ''
+      // 结束提交中
+      this.submitting = false
+    },
     // 单击回复标签，展示回复弹出层逻辑
     // 参数commentID是被激活的评论的id
     openReply (commentID) {
@@ -185,6 +247,20 @@ export default {
     .van-cell__label {
       width: 400px;
     }
+  }
+}
+// 添加评论或回复构件
+.reply-container {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 88px;
+  width: 100%;
+  background: #f5f5f5;
+  z-index: 9999;
+  .submit {
+    font-size: 24px;
+    color: #3296fa;
   }
 }
 </style>
