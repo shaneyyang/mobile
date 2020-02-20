@@ -37,3 +37,15 @@ export function apiUnFollow (target) {
     url: `/app/v1_0/user/followings/${target}`
   })
 }
+
+/**
+ * api:获取用户自己信息
+ * 接口文档的目标id 不用传->忽略
+ * 接口：【获取用户自己信息】
+ */
+export const apiUserInfo = () => {
+  return request({
+    url: '/app/v1_0/user',
+    method: 'GET'
+  })
+}

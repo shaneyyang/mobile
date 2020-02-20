@@ -8,13 +8,20 @@
       <van-tabbar-item to="/home" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item to="/question" icon="chat-o">问答</van-tabbar-item>
       <van-tabbar-item to="/video" icon="video-o">视频</van-tabbar-item>
-      <van-tabbar-item to="/user" icon="user-o">我的</van-tabbar-item>
+      <van-tabbar-item :to="userGo" icon="user-o" >{{$store.state.user.token?'我的':'未登录'}}</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'layout-index',
+  computed: {
+    userGo () {
+      return this.$store.state.user.token ? '/user' : '/login'
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -29,10 +36,10 @@ export default {}
     padding-top: 92px;
     padding-bottom: 100px;
     box-sizing: border-box;
-    // 先注释掉，看以后有什么变化
-    // &.noTop {
-    //   padding-top: 0;
-    // }
+    // 如果是个人中心页面，则没有上面的导航栏
+    &.noTop {
+      padding-top: 0;
+    }
   }
 }
 </style>
