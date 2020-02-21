@@ -5,7 +5,7 @@
       @click-left="$router.back()"
       title="编辑资料"
       right-text="保存"
-      @click-right="save()"
+      @click-right="saveProfile()"
     ></van-nav-bar>
     <van-cell-group>
       <van-cell is-link title="头像" center @click="showPhoto=true">
@@ -79,7 +79,7 @@ type 时间类型，年月日
 import dayjs from 'dayjs'
 
 // 获取用户资料的api
-import { apiUserProfile, apiUserPhoto } from '../../api/user'
+import { apiUserProfile, apiUserPhoto, apiSaveProfile } from '../../api/user'
 
 export default {
   name: 'user-profile',
@@ -128,8 +128,10 @@ export default {
       this.nowDate = new Date(this.userProfile.birthday)
     },
 
-    save () {
-      this.$toast.success('保存成功')
+    // 更新用户资料
+    async saveProfile () {
+      await apiSaveProfile(this.userProfile)
+      this.$toast.success('更新用户资料成功')
     }
   }
 }
