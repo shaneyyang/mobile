@@ -19,21 +19,38 @@
           height="56"
           fit="cover"
           round
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="userProfile.photo"
         />
       </van-cell>
       <!-- value=xxx 设置单元格右侧内容部分 -->
-      <van-cell is-link title="名称" value="用户名称"/>
-      <van-cell is-link title="性别" value="男"/>
-      <van-cell is-link title="生日" value="2019-08-08"/>
+      <van-cell is-link v-model="userProfile.name" title="名称" />
+      <van-cell is-link v-model="userProfile.gender" title="性别" />
+      <van-cell is-link v-model="userProfile.birthday" title="生日" />
     </van-cell-group>
   </div>
 </template>
 
 <script>
+// 获取用户资料的api
+import { apiUserProfile } from '../../api/user'
+
 export default {
   name: 'user-profile',
+  data () {
+    return {
+      // 用户信息
+      userProfile: {}
+    }
+  },
+  created () {
+    this.getUserProfile() // 调用获取用户资料的方法
+  },
   methods: {
+    // 获取用户资料的方法
+    async getUserProfile () {
+      this.userProfile = await apiUserProfile()
+    },
+
     save () {
       this.$toast.success('保存成功')
     }
