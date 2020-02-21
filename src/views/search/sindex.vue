@@ -67,14 +67,17 @@ export default {
   watch: {
     // 监听搜索文字变化
     searchText: function (newV) {
+      // 防抖操作
+      clearTimeout(this.timer)
       // 关键字为空就停止联想
       if (!newV) {
         this.suggestionList = []
-        clearTimeout(this.timer)
+        // clearTimeout(this.timer)
         return false
       }
-      // 防抖操作
-      clearTimeout(this.timer)
+      // 防抖操作不能在此处，不然最后一次删除之后，还会出现联想
+      // // 防抖操作
+      // clearTimeout(this.timer)
 
       this.timer = setTimeout(async () => {
         // 获取搜索结果
@@ -127,9 +130,14 @@ export default {
       // 获得匹配内容
       const rst = item.match(reg)
 
-      // 对关键字进行高亮处理
-      return item.replace(reg, `<span style="color:red">${rst[0]}</span>`)
+      try {
+        // 对关键字进行高亮处理
+        return item.replace(reg, `<span style="color:red">${rst[0]}</span>`)
+      } catch {
+        return item
+      }
     }
+
   }
 }
 </script>
