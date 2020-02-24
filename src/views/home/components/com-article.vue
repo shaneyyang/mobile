@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-wrapper">
+  <div class="scroll-wrapper" @scroll="remember()" ref="myarticle">
     <!-- 下拉刷新 -->
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh" :success-text="downSuccessText">
       <!-- 瀑布 -->
@@ -77,11 +77,24 @@ export default {
       // 时间戳
       ts: Date.now(),
       // 提示文字
-      downSuccessText: ''
+      downSuccessText: '',
+      // 滚动条滚动的位置
+      qianTop: 0
     }
   },
-
+  // keep-alive 组件激活后就调用的方法
+  activated () {
+  // 滚动条位置恢复操作
+    if (this.qianTop) {
+      this.$refs.myarticle.scrollTop = this.qianTop
+    }
+  },
   methods: {
+    // 记录滚动条的滚动到的位置
+    // 滚动条随时滚动，remember随时调用
+    remember () {
+      this.qianTop = this.$refs.myarticle.scrollTop
+    },
     // 文章不感兴趣
     handleDislikeSuccess () {
       // 删除指定的文章（删除结构）

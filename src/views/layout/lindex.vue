@@ -1,14 +1,22 @@
 <template>
   <div class="container">
-    <van-nav-bar v-if="showNavBar" title="黑马头条" fixed right-text="搜索" @click-right="$router.push('/search')" />
+    <van-nav-bar
+      v-if="showNavBar"
+      title="黑马头条"
+      fixed
+      right-text="搜索"
+      @click-right="$router.push('/search')"
+    />
     <div class="my-wrapper" :class="{noTop:!showNavBar}">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <van-tabbar route>
       <van-tabbar-item to="/home" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item to="/question" icon="chat-o">问答</van-tabbar-item>
       <van-tabbar-item to="/video" icon="video-o">视频</van-tabbar-item>
-      <van-tabbar-item :to="userGo" icon="user-o" >{{$store.state.user.token?'我的':'未登录'}}</van-tabbar-item>
+      <van-tabbar-item :to="userGo" icon="user-o">{{$store.state.user.token?'我的':'未登录'}}</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
